@@ -1,0 +1,22 @@
+=begin
+  c = Pyr.build{ a{ b{ c{ d "a"}}}}
+  
+  c[:a][:b][:c].append{ f "g"}.to_html # => "<c><d>a</d><f>g</f></c>"
+  c[:a].remove(Pyr::Element.new(:b))
+  c[:a].to_html                        # => "<a></a>"
+  
+  a = (c[:a] + Pyr::Element.new(:foobar, :keke => :bumm))
+  c.to_html                       # => "<a><foobar keke=\"bumm\"></foobar></a>"
+  c[:a][:foobar].args.merge!(:ja => :nein) # => {:keke=>:bumm, :ja=>:nein}
+  c.to_html                               # => "<a><foobar keke=\"bumm\" ja=\"nein\"></foobar></a>"
+  
+  d = Pyr.build{ hello "world "}
+  _ = d[:hello] + c
+  d.to_html                       # => "<hello>world <a><foobar keke=\"bumm\" ja=\"nein\"></foobar></a></hello>"
+  
+  d.push(Pyr::Element.new(:keke))
+  d.unshift(Pyr::Element.new(:first))
+  d.to_html                       # => "<first></first><hello>world <a><foobar keke=\"bumm\" ja=\"nein\"></foobar></a></hello><keke></keke>"
+  d.map{ |ele| ele.name}          # => [:first, :hello, :keke]
+
+=end
