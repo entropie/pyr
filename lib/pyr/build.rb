@@ -8,30 +8,31 @@ module Pyr
     
     attr_accessor :parent
     attr_accessor :build_block
+
+    module Clean
+      def p(*args, &blk)
+        args.unshift :p
+        ele = __eval__(*args, &blk)
+        ele
+      end
+    end
     
     def build(&blk)
       raise "build is closed" if closed?
       @build_block = blk
+      clean!
       instance_eval(&blk) if block_given?
-      close_clean
       self
     end
 
     def close_clean
-      clean!
       close
-    rescue
-    ensure
+      clean!
       self
     end
-    
+
     def clean!
-      class << self
-        [:p, :id, :clean!].each do |m|
-          alias_method("__#{m}__", m)
-          undef_method(m) rescue nil 
-        end
-      end
+      extend(Clean)
     end
     
     def close
@@ -53,7 +54,7 @@ module Pyr
 
     def __eval__(m, *args, &blk)
       return false if closed?
-      ele = Element[m]
+      ele = Element[m.to_s.downcase]
       if (arg = args.first and (arg.kind_of?(String) or arg.kind_of?(Symbol)))
         ele.value = args.shift
       end

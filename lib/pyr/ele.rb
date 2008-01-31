@@ -16,7 +16,7 @@ module Pyr
       @children = Pyr.build(&blk)
       self
     end
-    
+
     # appends element
     def inner_append(*o)
       o.each do |ele|

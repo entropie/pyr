@@ -17,7 +17,6 @@ module Pyr
     end
 
     def +(o)
-      pp 1
       super
     end
     

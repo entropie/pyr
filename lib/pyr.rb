@@ -7,7 +7,7 @@ require 'delegate'
 
 $:.unshift(File.dirname(__FILE__))
 %w'tidy outp build eles ele'.each do |l|
-  require "pyr/#{l}"
+  require "pyr/" + l
 end
 
 # :include:../README.rdoc
